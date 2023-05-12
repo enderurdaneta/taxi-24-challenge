@@ -9,10 +9,11 @@ import appConfigSchema from './config/app.schema';
 //LoggerModule
 import { LoggerModule } from 'nestjs-pino';
 import { CORRELATION_TRACE } from './middleware/correlationid/correlation-id.middleware';
-import { DatabaseModule } from './database/database.module';
-import { DriverModule } from './module/driver/driver.module';
-import { TravelModule } from './module/travel/travel.module';
-import { PassengerModule } from './module/passenger/passenger.module';
+import { DriverModule } from './modules/driver/driver.module';
+import { TravelModule } from './modules/travel/travel.module';
+import { PassengerModule } from './modules/passenger/passenger.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { dataSourceOptions } from './database/config';
 
 @Module({
   imports: [
@@ -51,12 +52,11 @@ import { PassengerModule } from './module/passenger/passenger.module';
         },
       },
     }),
-    DatabaseModule,
+    // TypeORM
+    TypeOrmModule.forRoot(dataSourceOptions),
     DriverModule,
     TravelModule,
     PassengerModule,
   ],
-  controllers: [],
-  providers: [],
 })
 export class AppModule {}
