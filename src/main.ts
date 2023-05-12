@@ -5,8 +5,13 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 import { ConfigService } from '@nestjs/config';
 
+import { Logger } from 'nestjs-pino';
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // logger
+  app.useLogger(app.get(Logger));
 
   // getting the config service
   const configService = app.get(ConfigService);
@@ -24,12 +29,12 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document, {
     customCss: '.swagger-ui .topbar { display: none }',
-    customSiteTitle: 'RatherLabs CHALLENGE',
+    customSiteTitle: 'Taxi24 CHALLENGE',
   });
 
   // starting the server
   await app.listen(PORT, BASE_URL, () => {
-    console.log(`app listening at ${PORT} in ${ENV}`);
+    console.log(`app listening at ${PORT} in ${ENV}\n`);
   });
 }
 bootstrap();
