@@ -46,7 +46,7 @@ export class Driver {
   color: string;
 
   @Column()
-  capacity: string;
+  capacity: number;
 
   @CreateDateColumn()
   createdAt: Date;

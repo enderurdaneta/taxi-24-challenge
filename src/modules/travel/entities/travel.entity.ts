@@ -32,10 +32,10 @@ export class Travel {
   addresDestination: string;
 
   @Column()
-  cost: string;
+  cost: number;
 
   @Column()
-  status: string;
+  status: number;
 
   @CreateDateColumn()
   createdAt: Date;

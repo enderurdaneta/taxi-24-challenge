@@ -15,7 +15,7 @@ export const dataSourceOptions: DataSourceOptions = {
   timezone: 'Z',
   synchronize: false,
   entities: [cwd() + '/**/*.entity.ts'],
-  migrations: [cwd() + '/migrations/*.ts'],
+  migrations: [cwd() + '/**/migrations/*.ts'],
 };
 
 const dataSource = new DataSource(dataSourceOptions);
