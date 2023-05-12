@@ -1,7 +1,7 @@
 {
   "name": "taxi-24-challenge",
   "version": "1.0.0",
-  "description": "The goal of this project is to create a public API REST in nestjs",
+  "description": "The goal of this project is to create a public API REST.",
   "author": "Ender Urdaneta",
   "private": true,
   "license": "UNLICENSED",
@@ -31,6 +31,7 @@
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
+    "@nestjs/swagger": "^6.3.0",
     "commitizen": "^4.3.0",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.2",
