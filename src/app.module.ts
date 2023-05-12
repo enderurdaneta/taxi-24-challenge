@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { Request } from 'express';
 
 //ConfigService
@@ -12,6 +10,9 @@ import appConfigSchema from './config/app.schema';
 import { LoggerModule } from 'nestjs-pino';
 import { CORRELATION_TRACE } from './middleware/correlationid/correlation-id.middleware';
 import { DatabaseModule } from './database/database.module';
+import { DriverModule } from './module/driver/driver.module';
+import { TravelModule } from './module/travel/travel.module';
+import { PassengerModule } from './module/passenger/passenger.module';
 
 @Module({
   imports: [
@@ -51,8 +52,11 @@ import { DatabaseModule } from './database/database.module';
       },
     }),
     DatabaseModule,
+    DriverModule,
+    TravelModule,
+    PassengerModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
