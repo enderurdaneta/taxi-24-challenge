@@ -10,10 +10,8 @@ import appConfigSchema from './config/app.schema';
 
 //LoggerModule
 import { LoggerModule } from 'nestjs-pino';
-import {
-  CorrelationIdMiddleware,
-  CORRELATION_TRACE,
-} from './middleware/correlationid/correlation-id.middleware';
+import { CORRELATION_TRACE } from './middleware/correlationid/correlation-id.middleware';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -52,6 +50,7 @@ import {
         },
       },
     }),
+    DatabaseModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -10,5 +10,13 @@ export default registerAs('config', () => {
       port: parseInt(process.env.PORT, 10) || 8080,
       baseUrl: process.env.BASE_URL || 'http://localhost:8080',
     },
+    db: {
+      type: process.env.DATABASE_TYPE,
+      host: process.env.DATABASE_HOST,
+      port: process.env.DATABASE_PORT,
+      username: process.env.DATABASE_USERNAME,
+      password: process.env.DATABASE_PASSWORD,
+      name: process.env.DATABASE_NAME,
+    },
   };
 });

@@ -6,4 +6,12 @@ export default Joi.object({
   // APP
   PORT: Joi.required(),
   BASE_URL: Joi.required(),
+
+  // DATABASE
+  DATABASE_TYPE: Joi.required(),
+  DATABASE_HOST: Joi.required(),
+  DATABASE_PORT: Joi.required(),
+  DATABASE_USERNAME: Joi.required(),
+  DATABASE_PASSWORD: Joi.required(),
+  DATABASE_NAME: Joi.required(),
 });
