@@ -1,18 +1,17 @@
 import {
   Controller,
   Get,
-  HttpException,
   HttpStatus,
   Param,
-  Logger,
   HttpCode,
   ParseUUIDPipe,
+  Logger,
 } from '@nestjs/common';
 import { DriverService } from './driver.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ResponseErrorDto } from 'src/common/response.dto';
 import { DriverOutputDto } from './dto/driver-output.dto';
-import { plainToInstance } from 'class-transformer';
+import catchError from 'src/common/catch-error';
 
 @ApiTags('Driver')
 @Controller('driver')
@@ -24,7 +23,7 @@ export class DriverController {
   @ApiOperation({ summary: 'Get driver for uid.' })
   @HttpCode(HttpStatus.OK)
   @ApiResponse({
-    status: HttpStatus.CREATED,
+    status: HttpStatus.OK,
     type: DriverOutputDto,
     description: 'Signer get successfully',
   })
@@ -40,7 +39,7 @@ export class DriverController {
       const response = await this.driverService.findOne(uid);
       return new DriverOutputDto(response);
     } catch (error) {
-      this.catchError(error, 'findOne', 'GET driver/:uid');
+      catchError(this.logger, error, 'findOne', 'GET driver/:uid');
     }
   }
 
@@ -48,7 +47,7 @@ export class DriverController {
   @ApiOperation({ summary: 'Get drivers list.' })
   @HttpCode(HttpStatus.OK)
   @ApiResponse({
-    status: HttpStatus.CREATED,
+    status: HttpStatus.OK,
     type: [DriverOutputDto],
     description: 'Signer get successfully',
   })
@@ -61,19 +60,7 @@ export class DriverController {
     try {
       return await this.driverService.findAll();
     } catch (error) {
-      Logger.error(error);
-      this.catchError(error, 'findAll', 'GET driver/');
+      catchError(this.logger, error, 'findAll', 'GET driver/');
     }
-  }
-
-  catchError(error, functionName: string, message: string) {
-    const status = error?.status || HttpStatus.INTERNAL_SERVER_ERROR;
-    if (status != 404)
-      Logger.error({
-        functionName,
-        message,
-        error,
-      });
-    throw new HttpException(error.message, status);
   }
 }

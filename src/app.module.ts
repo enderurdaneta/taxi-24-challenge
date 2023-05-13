@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { Request } from 'express';
 
 //ConfigService
@@ -8,7 +8,10 @@ import appConfigSchema from './config/app.schema';
 
 //LoggerModule
 import { LoggerModule } from 'nestjs-pino';
-import { CORRELATION_TRACE } from './middleware/correlationid/correlation-id.middleware';
+import {
+  CORRELATION_TRACE,
+  CorrelationIdMiddleware,
+} from './middleware/correlationid/correlation-id.middleware';
 import { DriverModule } from './modules/driver/driver.module';
 import { TravelModule } from './modules/travel/travel.module';
 import { PassengerModule } from './modules/passenger/passenger.module';
@@ -59,4 +62,8 @@ import { dataSourceOptions } from './database/config';
     PassengerModule,
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(CorrelationIdMiddleware).forRoutes('*');
+  }
+}
