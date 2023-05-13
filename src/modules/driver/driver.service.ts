@@ -3,7 +3,6 @@ import { Driver } from './entities/driver.entity';
 import { IsNull, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DriverListQueryDto } from './dto/driver-list-query.dto';
-import { Travel } from '../travel/entities/travel.entity';
 
 @Injectable()
 export class DriverService {
