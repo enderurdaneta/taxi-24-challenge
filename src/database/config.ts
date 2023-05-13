@@ -14,8 +14,8 @@ export const dataSourceOptions: DataSourceOptions = {
   logging: env.DATABASE_LOG === 'true',
   timezone: 'Z',
   synchronize: false,
-  entities: [cwd() + '/**/*.entity.ts'],
-  migrations: [cwd() + '/**/migrations/*.ts'],
+  entities: ['dist/**/*.entity.js'],
+  migrations: [cwd() + '/database/migrations/**/*{.ts,.js}'],
 };
 
 const dataSource = new DataSource(dataSourceOptions);
