@@ -7,7 +7,7 @@ function catchError(
   message: string,
 ) {
   const status = error?.status || HttpStatus.INTERNAL_SERVER_ERROR;
-  if (status != 404)
+  if (status != 404 && status != 400)
     logger.error({
       message,
       functionName,

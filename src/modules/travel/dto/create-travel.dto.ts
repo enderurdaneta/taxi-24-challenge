@@ -2,14 +2,14 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, IsPositive, IsString, IsUUID } from 'class-validator';
 export class CreateTravelDto {
   @ApiProperty({
-    example: '90d80c52-e26f-4478-ad14-cb364910ffef',
+    example: '21a33761-c18e-41ae-b735-e9848da1fd11',
     description: 'driverUid',
   })
   @IsUUID()
   driverUid: string;
 
   @ApiProperty({
-    example: '90d80c52-e26f-4478-ad14-cb364910ffef',
+    example: '3895cfdb-47a1-4bcf-8bd5-9e287a576bd2',
     description: 'passengerUid',
   })
   @IsUUID()

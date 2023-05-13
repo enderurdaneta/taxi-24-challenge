@@ -8,11 +8,11 @@ import {
   Body,
   Patch,
   Logger,
+  ParseUUIDPipe,
   Query,
 } from '@nestjs/common';
 import { TravelService } from './travel.service';
 import { CreateTravelDto } from './dto/create-travel.dto';
-import { UpdateTravelDto } from './dto/update-travel.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import catchError from 'src/common/catch-error';
 import { ResponseErrorDto } from 'src/common/response.dto';
@@ -69,8 +69,20 @@ export class TravelController {
     return travels.map((travel) => new TravelOutputDto(travel));
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTravelDto: UpdateTravelDto) {
-    return this.travelService.update(+id, updateTravelDto);
+  @Patch(':uid')
+  @ApiOperation({ summary: 'Completed travel.' })
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: TravelOutputDto,
+    description: 'Signer get successfully',
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    type: ResponseErrorDto,
+    description: 'Internal server error',
+  })
+  update(@Param('uid', new ParseUUIDPipe()) uid: string) {
+    return this.travelService.completed(uid);
   }
 }
