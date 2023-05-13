@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsOptional, IsPositive } from 'class-validator';
+import { IsNumber, IsOptional, IsPositive, IsBoolean } from 'class-validator';
 
-export class PassengerListQueryDto {
+export class TravelListQueryDto {
   @ApiProperty({
     example: 50,
     description: 'limit',
@@ -26,4 +26,12 @@ export class PassengerListQueryDto {
   @IsNumber()
   @IsOptional()
   offset: number;
+
+  @ApiProperty({
+    example: true,
+    description: 'active',
+    default: true,
+  })
+  @IsBoolean()
+  active: boolean;
 }

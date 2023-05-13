@@ -2,10 +2,13 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTravelDto } from './dto/create-travel.dto';
 import { UpdateTravelDto } from './dto/update-travel.dto';
 import { Travel } from './entities/travel.entity';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PassengerService } from '../passenger/passenger.service';
 import { DriverService } from '../driver/driver.service';
+import { TravelListQueryDto } from './dto/travel-list-query.dto';
+import { Driver } from '../driver/entities/driver.entity';
+import { Passenger } from '../passenger/entities/passenger.entity';
 
 @Injectable()
 export class TravelService {
@@ -33,8 +36,24 @@ export class TravelService {
     return this.travelRepository.save(travel);
   }
 
-  findAll() {
-    return `This action returns all travel`;
+  async findAll({
+    limit = 50,
+    offset = 0,
+    active = true,
+  }: TravelListQueryDto): Promise<Travel[]> {
+    const status = active ? 1 : 2;
+
+    const travels = await this.travelRepository.find({
+      where: {
+        deletedAt: IsNull(),
+        status,
+      },
+      relations: ['driver', 'passenger'],
+      skip: offset,
+      take: limit,
+    });
+    if (travels.length == 0) throw new NotFoundException(`Not found travels.`);
+    return travels;
   }
 
   update(id: number, updateTravelDto: UpdateTravelDto) {

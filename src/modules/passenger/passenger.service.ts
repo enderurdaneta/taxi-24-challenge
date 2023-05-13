@@ -20,8 +20,8 @@ export class PassengerService {
   }
 
   async findAll({
-    limit,
-    offset,
+    limit = 50,
+    offset = 0,
   }: PassengerListQueryDto): Promise<Passenger[]> {
     const passengers = await this.passengerRepository.find({
       select: [

@@ -19,7 +19,10 @@ export class DriverService {
     return driver;
   }
 
-  async findAll({ limit, offset }: DriverListQueryDto): Promise<Driver[]> {
+  async findAll({
+    limit = 50,
+    offset = 0,
+  }: DriverListQueryDto): Promise<Driver[]> {
     const drivers = await this.driverRepository.find({
       select: [
         'uid',

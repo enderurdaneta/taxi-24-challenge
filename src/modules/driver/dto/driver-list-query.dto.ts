@@ -13,7 +13,7 @@ export class DriverListQueryDto {
   @IsNumber()
   @IsPositive()
   @IsOptional()
-  limit = 50;
+  limit: number;
 
   @ApiProperty({
     example: 0,
@@ -25,7 +25,7 @@ export class DriverListQueryDto {
   })
   @IsNumber()
   @IsOptional()
-  offset = 0;
+  offset: number;
 
   @ApiProperty({
     example: true,
