@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsOptional, IsPositive, IsBoolean } from 'class-validator';
+import { IsNumber, IsOptional, IsPositive, IsString } from 'class-validator';
 
 export class DriverListQueryDto {
   @ApiProperty({
@@ -28,12 +28,12 @@ export class DriverListQueryDto {
   offset: number;
 
   @ApiProperty({
-    example: true,
+    example: 'true',
     description: 'available',
     default: null,
     required: false,
   })
-  @IsBoolean()
+  @IsString()
   @IsOptional()
-  available: boolean;
+  available: string;
 }

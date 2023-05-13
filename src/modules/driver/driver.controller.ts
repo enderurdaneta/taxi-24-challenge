@@ -62,7 +62,11 @@ export class DriverController {
     @Query() queryParam: DriverListQueryDto,
   ): Promise<Array<DriverOutputDto>> {
     try {
-      return await this.driverService.findAll(queryParam);
+      if (queryParam.available === 'true') {
+        return await this.driverService.findAllAvailable(queryParam);
+      } else {
+        return await this.driverService.findAll(queryParam);
+      }
     } catch (error) {
       catchError(this.logger, error, 'findAll', 'GET driver/');
     }

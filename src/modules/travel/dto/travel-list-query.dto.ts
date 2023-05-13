@@ -34,7 +34,7 @@ export class TravelListQueryDto {
   offset: number;
 
   @ApiProperty({
-    example: true,
+    example: 'true',
     description: 'active',
     default: 'true',
   })
