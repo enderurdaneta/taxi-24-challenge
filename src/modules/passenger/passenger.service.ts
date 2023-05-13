@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Passenger } from './entities/passenger.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IsNull, Repository } from 'typeorm';
+import { PassengerListQueryDto } from './dto/passenger-list-query.dto';
 
 @Injectable()
 export class PassengerService {
@@ -18,11 +19,11 @@ export class PassengerService {
     return passenger;
   }
 
-  async findAll(): Promise<Passenger[]> {
+  async findAll({
+    limit,
+    offset,
+  }: PassengerListQueryDto): Promise<Passenger[]> {
     const passengers = await this.passengerRepository.find({
-      where: {
-        deletedAt: IsNull(),
-      },
       select: [
         'uid',
         'documentTypeId',
@@ -32,6 +33,11 @@ export class PassengerService {
         'email',
         'phone',
       ],
+      where: {
+        deletedAt: IsNull(),
+      },
+      skip: offset,
+      take: limit,
     });
     if (passengers.length == 0)
       throw new NotFoundException(`Not found passengers.`);

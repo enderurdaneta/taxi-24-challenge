@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Driver } from './entities/driver.entity';
 import { IsNull, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { DriverListQueryDto } from './dto/driver-list-query.dto';
 
 @Injectable()
 export class DriverService {
@@ -18,11 +19,8 @@ export class DriverService {
     return driver;
   }
 
-  async findAll(): Promise<Driver[]> {
+  async findAll({ limit, offset }: DriverListQueryDto): Promise<Driver[]> {
     const drivers = await this.driverRepository.find({
-      where: {
-        deletedAt: IsNull(),
-      },
       select: [
         'uid',
         'documentTypeId',
@@ -36,6 +34,11 @@ export class DriverService {
         'color',
         'capacity',
       ],
+      where: {
+        deletedAt: IsNull(),
+      },
+      skip: offset,
+      take: limit,
     });
     if (drivers.length == 0) throw new NotFoundException(`Not found drivers.`);
     return drivers;

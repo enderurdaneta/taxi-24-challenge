@@ -6,12 +6,14 @@ import {
   HttpCode,
   ParseUUIDPipe,
   Logger,
+  Query,
 } from '@nestjs/common';
 import { PassengerService } from './passenger.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import catchError from 'src/common/catch-error';
 import { PassengerOutputDto } from './dto/passenger-output.dto';
 import { ResponseErrorDto } from 'src/common/response.dto';
+import { PassengerListQueryDto } from './dto/passenger-list-query.dto';
 
 @ApiTags('Passenger')
 @Controller('passenger')
@@ -56,9 +58,11 @@ export class PassengerController {
     type: ResponseErrorDto,
     description: 'Internal server error',
   })
-  async findAll(): Promise<Array<PassengerOutputDto>> {
+  async findAll(
+    @Query() queryParam: PassengerListQueryDto,
+  ): Promise<Array<PassengerOutputDto>> {
     try {
-      return await this.passengerService.findAll();
+      return await this.passengerService.findAll(queryParam);
     } catch (error) {
       catchError(this.logger, error, 'findAll', 'GET driver/');
     }

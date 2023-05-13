@@ -6,12 +6,14 @@ import {
   HttpCode,
   ParseUUIDPipe,
   Logger,
+  Query,
 } from '@nestjs/common';
 import { DriverService } from './driver.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ResponseErrorDto } from 'src/common/response.dto';
 import { DriverOutputDto } from './dto/driver-output.dto';
 import catchError from 'src/common/catch-error';
+import { DriverListQueryDto } from './dto/driver-list-query.dto';
 
 @ApiTags('Driver')
 @Controller('driver')
@@ -56,9 +58,11 @@ export class DriverController {
     type: ResponseErrorDto,
     description: 'Internal server error',
   })
-  async findAll(): Promise<Array<DriverOutputDto>> {
+  async findAll(
+    @Query() queryParam: DriverListQueryDto,
+  ): Promise<Array<DriverOutputDto>> {
     try {
-      return await this.driverService.findAll();
+      return await this.driverService.findAll(queryParam);
     } catch (error) {
       catchError(this.logger, error, 'findAll', 'GET driver/');
     }

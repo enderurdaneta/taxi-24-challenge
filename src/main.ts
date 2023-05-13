@@ -1,4 +1,5 @@
 import { NestFactory } from '@nestjs/core';
+import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
@@ -9,6 +10,9 @@ import { Logger } from 'nestjs-pino';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // Prefix
+  app.setGlobalPrefix('api/v1');
 
   // logger
   app.useLogger(app.get(Logger));
@@ -31,6 +35,18 @@ async function bootstrap() {
     customCss: '.swagger-ui .topbar { display: none }',
     customSiteTitle: 'Taxi24 CHALLENGE',
   });
+
+  // ValidationPipe
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
+    }),
+  );
 
   // starting the server
   await app.listen(PORT, BASE_URL, () => {
