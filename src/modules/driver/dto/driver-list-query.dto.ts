@@ -3,6 +3,8 @@ import { IsNumber, IsOptional, IsPositive, IsBoolean } from 'class-validator';
 
 export class DriverListQueryDto {
   @ApiProperty({
+    example: 50,
+    description: 'limit',
     minimum: 1,
     exclusiveMinimum: true,
     format: 'int32',
@@ -14,6 +16,8 @@ export class DriverListQueryDto {
   limit = 50;
 
   @ApiProperty({
+    example: 0,
+    description: 'offset',
     minimum: 0,
     exclusiveMinimum: true,
     format: 'int32',

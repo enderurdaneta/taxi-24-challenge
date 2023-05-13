@@ -64,7 +64,7 @@ export class PassengerController {
     try {
       return await this.passengerService.findAll(queryParam);
     } catch (error) {
-      catchError(this.logger, error, 'findAll', 'GET driver/');
+      catchError(this.logger, error, 'findAll', 'GET passenger/');
     }
   }
 }
