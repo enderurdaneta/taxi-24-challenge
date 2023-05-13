@@ -7,12 +7,12 @@ function catchError(
   message: string,
 ) {
   const status = error?.status || HttpStatus.INTERNAL_SERVER_ERROR;
-  //if (status != 404)
-  logger.error({
-    functionName,
-    message,
-    error,
-  });
+  if (status != 404)
+    logger.error({
+      message,
+      functionName,
+      error,
+    });
   throw new HttpException(error.message, status);
 }
 

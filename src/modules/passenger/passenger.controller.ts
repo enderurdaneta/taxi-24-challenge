@@ -20,7 +20,7 @@ export class PassengerController {
   constructor(private readonly passengerService: PassengerService) {}
 
   @Get(':uid')
-  @ApiOperation({ summary: 'Get driver for uid.' })
+  @ApiOperation({ summary: 'Get passenger for uid.' })
   @HttpCode(HttpStatus.OK)
   @ApiResponse({
     status: HttpStatus.OK,
@@ -44,7 +44,23 @@ export class PassengerController {
   }
 
   @Get()
-  findAll() {
-    return this.passengerService.findAll();
+  @ApiOperation({ summary: 'Get passenger list.' })
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: [PassengerOutputDto],
+    description: 'Signer get successfully',
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    type: ResponseErrorDto,
+    description: 'Internal server error',
+  })
+  async findAll(): Promise<Array<PassengerOutputDto>> {
+    try {
+      return await this.passengerService.findAll();
+    } catch (error) {
+      catchError(this.logger, error, 'findAll', 'GET driver/');
+    }
   }
 }
