@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Driver } from './entities/driver.entity';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
@@ -18,7 +18,26 @@ export class DriverService {
     return driver;
   }
 
-  findAll() {
-    return `This action returns all driver`;
+  async findAll(): Promise<Driver[]> {
+    const drivers = await this.driverRepository.find({
+      where: {
+        deletedAt: IsNull(),
+      },
+      select: [
+        'uid',
+        'documentTypeId',
+        'documentNumber',
+        'firtName',
+        'lastName',
+        'email',
+        'phone',
+        'brand',
+        'licensePlate',
+        'color',
+        'capacity',
+      ],
+    });
+    if (drivers.length == 0) throw new NotFoundException(`Not found drivers.`);
+    return drivers;
   }
 }
