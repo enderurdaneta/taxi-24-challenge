@@ -14,4 +14,5 @@ export default Joi.object({
   DATABASE_USERNAME: Joi.required(),
   DATABASE_PASSWORD: Joi.required(),
   DATABASE_NAME: Joi.required(),
+  DATABASE_LOG: Joi.required(),
 });

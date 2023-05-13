@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { Request } from 'express';
 
 //ConfigService
@@ -8,11 +8,13 @@ import appConfigSchema from './config/app.schema';
 
 //LoggerModule
 import { LoggerModule } from 'nestjs-pino';
-import { CORRELATION_TRACE } from './middleware/correlationid/correlation-id.middleware';
-import { DatabaseModule } from './database/database.module';
-import { DriverModule } from './module/driver/driver.module';
-import { TravelModule } from './module/travel/travel.module';
-import { PassengerModule } from './module/passenger/passenger.module';
+import { CorrelationIdMiddleware } from './middleware/correlationid/correlation-id.middleware';
+import { DriverModule } from './modules/driver/driver.module';
+import { TravelModule } from './modules/travel/travel.module';
+import { PassengerModule } from './modules/passenger/passenger.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { dataSourceOptions } from './database/config';
+import { loggerOptions } from './logger/logger-options';
 
 @Module({
   imports: [
@@ -23,40 +25,16 @@ import { PassengerModule } from './module/passenger/passenger.module';
       validationSchema: appConfigSchema,
     }),
     // logger
-    LoggerModule.forRoot({
-      pinoHttp: {
-        transport:
-          process.env.NODE_ENV !== 'production'
-            ? {
-                target: 'pino-pretty',
-                options: {
-                  messageKey: 'message',
-                },
-              }
-            : undefined,
-        messageKey: 'message',
-        customProps: (req: Request) => {
-          return {
-            correlation: req[CORRELATION_TRACE],
-          };
-        },
-        autoLogging: false,
-        serializers: {
-          req() {
-            return undefined;
-          },
-          res() {
-            return undefined;
-          },
-        },
-      },
-    }),
-    DatabaseModule,
+    LoggerModule.forRoot(loggerOptions),
+    // TypeORM
+    TypeOrmModule.forRoot(dataSourceOptions),
     DriverModule,
     TravelModule,
     PassengerModule,
   ],
-  controllers: [],
-  providers: [],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(CorrelationIdMiddleware).forRoutes('*');
+  }
+}
